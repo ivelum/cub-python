@@ -3,7 +3,7 @@ from .transport import API, json
 
 def objects_from_json(json_content, api_key=None):
     if isinstance(json_content, basestring):
-        return objects_from_json(json.loads(json_content))
+        return objects_from_json(json.loads(json_content), api_key)
     elif isinstance(json_content, list):
         return [objects_from_json(obj, api_key) for obj in json_content]
     elif isinstance(json_content, dict):
@@ -63,7 +63,7 @@ class CubObject(object):
     def load_from(self, dikt):
         for k, v in dikt.items():
             if isinstance(v, dict):
-                v = objects_from_json(v)
+                v = objects_from_json(v, self.api_key)
             self.__setattr__(k, v)
         return self
 
@@ -80,8 +80,9 @@ class CubObject(object):
 class CreatableObject(CubObject):
     @classmethod
     def create(cls, api_key=None, **kwargs):
-        response = API(api_key).request('post', cls.class_url(), params=kwargs)
-        return objects_from_json(response)
+        api = API(api_key)
+        response = api.request('post', cls.class_url(), params=kwargs)
+        return objects_from_json(response, api.api_key)
 
 
 class UpdatableObject(CubObject):
