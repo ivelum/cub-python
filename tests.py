@@ -13,9 +13,9 @@ class APITest(TestCase):
         self.assertEqual('den', user.username)
         self.assertEqual('slow', user.first_name)
         self.assertEqual('poke', user.last_name)
-        self.assertIsInstance(user.date_joined, datetime)
+        self.assertTrue(isinstance(user.date_joined, datetime))
         utc_now = datetime.utcnow().replace(tzinfo=utc)
-        self.assertLess(user.date_joined, utc_now)
+        self.assertTrue(user.date_joined < utc_now)
 
         user2 = User.get(user.token)
         self.assertEqual(user2.username, user.username)
