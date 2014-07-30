@@ -4,6 +4,8 @@ python:
   - "2.7"
   - "pypy"
 env:
+  - HTTPLIB=requests pytz
+  - HTTPLIB=pytz
   - HTTPLIB=requests
   - HTTPLIB=
 install:
