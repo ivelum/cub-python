@@ -17,7 +17,7 @@ setup(
     name='cub',
     version=cub.__version__,
     description='Cub Client for Python',
-    long_description=open('readme.rst').read(),
+    long_description=open('README.rst').read(),
     author='Denis Stebunov',
     author_email='support@ivelum.com',
     url='https://github.com/ivelum/cub-python',
