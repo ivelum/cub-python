@@ -1,5 +1,7 @@
+from datetime import datetime
 import platform
 from .exceptions import *
+from .timezone import utc
 from .version import version
 import warnings
 import textwrap
@@ -55,6 +57,19 @@ def urlify(params, prefix=''):
         else:
             result[key] = v
     return result
+
+
+def json_datetime_hook(dikt):
+    for k, v in dikt.items():
+        if isinstance(v, basestring) and v.endswith('Z'):
+            try:
+                dt = datetime.strptime(v, '%Y-%m-%dT%H:%M:%SZ')
+            except ValueError:
+                pass
+            else:
+                dt = dt.replace(tzinfo=utc)
+                dikt[k] = dt
+    return dikt
 
 
 class API(object):
@@ -171,7 +186,7 @@ class API(object):
                 )
 
         try:
-            json_body = json.loads(http_body)
+            json_body = json.loads(http_body, object_hook=json_datetime_hook)
         except Exception as e:
             raise APIError(
                 'Invalid response from the API: %s' % http_body,
