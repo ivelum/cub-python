@@ -7,12 +7,22 @@ from cub.timezone import utc
 class APITest(TestCase):
     def setUp(self):
         config.api_key = 's_23a00c357cb44c358b6d35feb5d4cac6'
+        self.test_user = {
+            'credentials': {
+                'username': 'den',
+                'password': 'denden',
+            },
+            'details': {
+                'username': 'den',
+                'first_name': 'slow',
+                'last_name': 'poke',
+            }
+        }
 
-    def test_login_and_get_by_token(self):
-        user = User.login('den', 'denden')
-        self.assertEqual('den', user.username)
-        self.assertEqual('slow', user.first_name)
-        self.assertEqual('poke', user.last_name)
+    def test_user_login_and_get_by_token(self):
+        user = User.login(**self.test_user['credentials'])
+        for k, v in self.test_user['details'].items():
+            self.assertEqual(v, getattr(user, k))
         self.assertTrue(isinstance(user.date_joined, datetime))
         utc_now = datetime.utcnow().replace(tzinfo=utc)
         self.assertTrue(user.date_joined < utc_now)
@@ -22,3 +32,10 @@ class APITest(TestCase):
         self.assertEqual(user2.first_name, user.first_name)
         self.assertEqual(user2.last_name, user.last_name)
         self.assertEqual(user2.date_joined, user.date_joined)
+
+    def test_user_reload(self):
+        user = User.login(**self.test_user['credentials'])
+        try:
+            user.reload()
+        except Exception as e:
+            self.fail(e)

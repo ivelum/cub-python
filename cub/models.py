@@ -127,6 +127,12 @@ class RemovableObject(CubObject):
 
 
 class User(UpdatableObject):
+    def load_from(self, dikt):
+        super(User, self).load_from(dikt)
+        if hasattr(self, 'token'):
+            self.api_key = self.token
+        return self
+
     @classmethod
     def class_url(cls):
         return '/user'
