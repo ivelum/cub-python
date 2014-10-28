@@ -9,7 +9,7 @@ class APITest(TestCase):
         config.api_key = 'sk_23a00c357cb44c358'
         self.test_user = {
             'credentials': {
-                'username': '!bjDTCAdtQRldwG67secVBBHc3ifmyhcqfJzvFLFF',
+                'username': 'denis.stebunov@ivelum.com',
                 'password': 'denden',
             },
             'details': {
