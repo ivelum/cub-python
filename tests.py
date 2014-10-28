@@ -6,14 +6,14 @@ from cub.timezone import utc
 
 class APITest(TestCase):
     def setUp(self):
-        config.api_key = 's_23a00c357cb44c358b6d35feb5d4cac6'
+        config.api_key = 'sk_23a00c357cb44c358'
         self.test_user = {
             'credentials': {
-                'username': 'den',
+                'username': '!bjDTCAdtQRldwG67secVBBHc3ifmyhcqfJzvFLFF',
                 'password': 'denden',
             },
             'details': {
-                'username': 'den',
+                'original_username': 'den',
                 'first_name': 'slow',
                 'last_name': 'poke',
             }
