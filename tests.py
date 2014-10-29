@@ -43,9 +43,9 @@ class APITest(TestCase):
 
     def test_organizations(self):
         organizations = Organization.list(count=2)
-        self.assertLessEqual(len(organizations), 2)
+        self.assertTrue(len(organizations) <= 2)
         for organization in organizations:
-            self.assertIsNotNone(organization.id)
-            self.assertIsNotNone(organization.name)
+            self.assertTrue(organization.id is not None)
+            self.assertTrue(organization.name is not None)
             org = Organization.get(id=organization.id)
             self.assertEqual(organization.name, org.name)
