@@ -1,6 +1,7 @@
 from datetime import datetime
 from unittest import TestCase
 from cub import config, User
+from cub.models import Organization
 from cub.timezone import utc
 
 
@@ -39,3 +40,12 @@ class APITest(TestCase):
             user.reload()
         except Exception as e:
             self.fail(e)
+
+    def test_organizations(self):
+        organizations = Organization.list(count=2)
+        self.assertLessEqual(len(organizations), 2)
+        for organization in organizations:
+            self.assertIsNotNone(organization.id)
+            self.assertIsNotNone(organization.name)
+            org = Organization.get(id=organization.id)
+            self.assertEqual(organization.name, org.name)

@@ -155,3 +155,7 @@ class User(UpdatableObject):
             'provider': provider,
         })
         return cls().load_from(response)
+
+
+class Organization(ListableObject):
+    pass
