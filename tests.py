@@ -1,7 +1,7 @@
 from datetime import datetime
 from unittest import TestCase
 from cub import config, User
-from cub.models import Organization
+from cub.models import Organization, Member
 from cub.timezone import utc
 
 
@@ -37,9 +37,15 @@ class APITest(TestCase):
     def test_user_reload(self):
         user = User.login(**self.test_user['credentials'])
         try:
-            user.reload()
+            user.reload(expand='membership__organization')
         except Exception as e:
             self.fail(e)
+        self.assertGreater(len(user.membership), 0)
+        member = user.membership[0]
+        self.assertIsInstance(member, Member)
+        self.assertEqual(member.api_key, user.api_key)
+        self.assertIsInstance(member.organization, Organization)
+        self.assertEqual(member.organization.api_key, user.api_key)
 
     def test_organizations(self):
         organizations = Organization.list(count=2)

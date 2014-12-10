@@ -15,7 +15,9 @@ def objects_from_json(json_content, api_key=None):
             id = json_content['id']
             klass = {
                 'user': User,
-                'organization': Organization
+                'organization': Organization,
+                'member': Member,
+                'invitation': Invitation,
             }.get(obj, CubObject)
             return klass(api_key=api_key, id=id).load_from(json_content)
         else:
@@ -66,19 +68,19 @@ class CubObject(object):
 
     def load_from(self, dikt):
         for k, v in dikt.items():
-            if isinstance(v, dict):
+            if isinstance(v, (dict, list)):
                 v = objects_from_json(v, self.api_key)
             self.__setattr__(k, v)
         return self
 
-    def reload(self):
-        response = API(self.api_key).request('get', self.instance_url())
+    def reload(self, **kwargs):
+        response = API(self.api_key).request('get', self.instance_url(), kwargs)
         return self.load_from(response)
 
     @classmethod
-    def get(cls, id, api_key=None):
+    def get(cls, id, api_key=None, **kwargs):
         instance = cls(api_key=api_key, id=id)
-        return instance.reload()
+        return instance.reload(**kwargs)
 
 
 class CreatableObject(CubObject):
@@ -129,10 +131,9 @@ class RemovableObject(CubObject):
 
 class User(UpdatableObject):
     def load_from(self, dikt):
-        super(User, self).load_from(dikt)
-        if hasattr(self, 'token'):
-            self.api_key = self.token
-        return self
+        if 'token' in dikt:
+            self.api_key = dikt['token']
+        return super(User, self).load_from(dikt)
 
     @classmethod
     def class_url(cls):
@@ -142,9 +143,9 @@ class User(UpdatableObject):
         return self.class_url()
 
     @classmethod
-    def get(cls, api_key=None):
+    def get(cls, api_key=None, **kwargs):
         instance = cls(api_key=api_key)
-        return instance.reload()
+        return instance.reload(**kwargs)
 
     @classmethod
     def login(cls, username, password, provider=None, api_key=None):
@@ -158,5 +159,13 @@ class User(UpdatableObject):
         return cls().load_from(response)
 
 
+class Invitation(ListableObject):
+    pass
+
+
 class Organization(ListableObject):
+    pass
+
+
+class Member(ListableObject):
     pass
