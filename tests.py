@@ -40,11 +40,11 @@ class APITest(TestCase):
             user.reload(expand='membership__organization')
         except Exception as e:
             self.fail(e)
-        self.assertGreater(len(user.membership), 0)
+        self.assertTrue(len(user.membership) > 0)
         member = user.membership[0]
-        self.assertIsInstance(member, Member)
+        self.assertTrue(isinstance(member, Member))
         self.assertEqual(member.api_key, user.api_key)
-        self.assertIsInstance(member.organization, Organization)
+        self.assertTrue(isinstance(member.organization, Organization))
         self.assertEqual(member.organization.api_key, user.api_key)
 
     def test_organizations(self):
