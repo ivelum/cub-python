@@ -69,7 +69,10 @@ class CubObject(object):
     def load_from(self, dikt):
         for k, v in dikt.items():
             if isinstance(v, (dict, list)):
-                v = objects_from_json(v, self.api_key)
+                try:
+                    v = objects_from_json(v, self.api_key)
+                except ValueError:
+                    pass
             self.__setattr__(k, v)
         return self
 
