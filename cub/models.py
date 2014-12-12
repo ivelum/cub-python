@@ -3,10 +3,11 @@ from .transport import API, json, json_datetime_hook
 
 def objects_from_json(json_content, api_key=None):
     if isinstance(json_content, basestring):
-        return objects_from_json(
-            json.loads(json_content, object_hook=json_datetime_hook),
-            api_key,
-        )
+        try:
+            content = json.loads(json_content, object_hook=json_datetime_hook)
+        except ValueError:
+            return json_content
+        return objects_from_json(content, api_key)
     elif isinstance(json_content, list):
         return [objects_from_json(obj, api_key) for obj in json_content]
     elif isinstance(json_content, dict):
