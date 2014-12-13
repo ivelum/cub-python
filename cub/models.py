@@ -18,7 +18,9 @@ def objects_from_json(json_content, api_key=None):
                 'user': User,
                 'organization': Organization,
                 'member': Member,
+                'memberposition': MemberPosition,
                 'invitation': Invitation,
+                'invitationbatch': InvitationBatch,
             }.get(obj, CubObject)
             return klass(api_key=api_key, id=id).load_from(json_content)
         else:
