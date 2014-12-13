@@ -164,9 +164,19 @@ class Invitation(ListableObject):
     pass
 
 
+class InvitationBatch(ListableObject):
+    @classmethod
+    def class_url(cls):
+        return '/invitationbatches'
+
+
 class Organization(ListableObject):
     pass
 
 
 class Member(ListableObject):
+    pass
+
+
+class MemberPosition(ListableObject):
     pass

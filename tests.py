@@ -1,7 +1,7 @@
 from datetime import datetime
 from unittest import TestCase
 from cub import config, User
-from cub.models import Organization, Member
+from cub.models import Organization, Member, InvitationBatch
 from cub.timezone import utc
 
 
@@ -55,3 +55,10 @@ class APITest(TestCase):
             self.assertTrue(organization.name is not None)
             org = Organization.get(id=organization.id)
             self.assertEqual(organization.name, org.name)
+
+    def test_invitation_batches(self):
+        user = User.login(**self.test_user['credentials'])
+        try:
+            InvitationBatch.list(sender=user, api_key=user.token)
+        except Exception as e:
+            self.fail(e)
