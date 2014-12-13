@@ -8,6 +8,9 @@ import textwrap
 import urllib
 import json
 
+import models
+
+
 # TODO: use urlfetch for Google App Engine
 try:
     import requests
@@ -54,6 +57,8 @@ def urlify(params, prefix=''):
                 # Must be utf-8, raise exception if it isn't
                 v.decode('utf8')
             result[key] = v
+        elif isinstance(v, models.CubObject):
+            result[key] = v.id
         else:
             result[key] = v
     return result
