@@ -164,7 +164,7 @@ class User(UpdatableObject):
         return cls().load_from(response)
 
 
-class Invitation(ListableObject):
+class Invitation(CreatableObject, RemovableObject, ListableObject):
     pass
 
 
@@ -178,11 +178,12 @@ class Organization(ListableObject):
     pass
 
 
-class Member(ListableObject):
+class Member(CreatableObject, UpdatableObject, RemovableObject, ListableObject):
     pass
 
 
-class MemberPosition(ListableObject):
+class MemberPosition(CreatableObject, UpdatableObject,
+                     RemovableObject, ListableObject):
     pass
 
 
