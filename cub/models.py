@@ -21,6 +21,8 @@ def objects_from_json(json_content, api_key=None):
                 'memberposition': MemberPosition,
                 'invitation': Invitation,
                 'invitationbatch': InvitationBatch,
+                'group': Group,
+                'groupmember': GroupMember,
             }.get(obj, CubObject)
             return klass(api_key=api_key, id=id).load_from(json_content)
         else:
@@ -181,4 +183,12 @@ class Member(ListableObject):
 
 
 class MemberPosition(ListableObject):
+    pass
+
+
+class Group(CreatableObject, UpdatableObject, RemovableObject, ListableObject):
+    pass
+
+
+class GroupMember(CreatableObject, RemovableObject, ListableObject):
     pass
