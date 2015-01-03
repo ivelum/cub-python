@@ -31,10 +31,11 @@ def objects_from_json(json_content, api_key=None):
 
 class CubObject(object):
 
-    def __init__(self, api_key=None, id=None, **kwargs):
+    def __init__(self, api_key=None, id=None, deleted=False, **kwargs):
         self.id = id
         self.api_key = api_key
-        self._values = {}
+        self.deleted = deleted
+        self._values = {'deleted': deleted}
         self.load_from(kwargs)
 
     def __setattr__(self, key, value):
