@@ -146,7 +146,7 @@ class User(UpdatableObject):
         return '/user'
 
     def instance_url(self):
-        return self.class_url()
+        return '/users/%s' % self.id if self.id else self.class_url()
 
     @classmethod
     def get(cls, api_key=None, **kwargs):
