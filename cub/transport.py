@@ -78,10 +78,11 @@ def json_datetime_hook(dikt):
 
 
 class API(object):
-    def __init__(self, key=None, base_url=None):
-        from .config import api_key, api_url
+    def __init__(self, key=None, base_url=None, timeout=None):
+        from .config import api_key, api_url, api_timeout
         self.api_key = key or api_key
         self.base_url = base_url or api_url
+        self.timeout = timeout or api_timeout
 
     def url(self, url):
         return '%s%s' % (self.base_url, url)
@@ -162,7 +163,6 @@ class API(object):
         data = urlify(params)
 
         # Send request to API and handle communication errors
-        timeout = 60
         if _lib == 'requests':
             try:
                 http_code, http_body = self.requests_request(
@@ -170,7 +170,7 @@ class API(object):
                     abs_url,
                     data=data,
                     headers=headers,
-                    timeout=timeout
+                    timeout=self.timeout
                 )
             except requests.RequestException as e:
                 raise ConnectionError(
@@ -183,7 +183,7 @@ class API(object):
                     abs_url,
                     data=data,
                     headers=headers,
-                    timeout=timeout
+                    timeout=self.timeout
                 )
             except urllib2.URLError as e:
                 raise ConnectionError(
