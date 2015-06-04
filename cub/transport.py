@@ -1,13 +1,13 @@
 from datetime import datetime
+import json
 import platform
+import textwrap
+import urllib
+import warnings
+
 from .exceptions import *
 from .timezone import utc
 from .version import version
-import warnings
-import textwrap
-import urllib
-import json
-
 import models
 
 

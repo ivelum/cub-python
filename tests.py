@@ -1,5 +1,6 @@
 from datetime import datetime
 from unittest import TestCase
+
 from cub import config, User
 from cub.models import Organization, Member, InvitationBatch, Group, \
     objects_from_json
