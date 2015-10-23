@@ -13,7 +13,7 @@ class APITest(TestCase):
         self.test_user = {
             'credentials': {
                 'username': 'denis.stebunov@ivelum.com',
-                'password': 'denden',
+                'password': 'user-super',
             },
             'details': {
                 'original_username': 'den',
@@ -77,6 +77,6 @@ class APITest(TestCase):
     def test_invitation_batches(self):
         user = User.login(**self.test_user['credentials'])
         try:
-            InvitationBatch.list(sender=user, api_key=user.token)
+            InvitationBatch.list(notification_sender=user, api_key=user.token)
         except Exception as e:
             self.fail(e)
