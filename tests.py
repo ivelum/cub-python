@@ -12,13 +12,13 @@ class APITest(TestCase):
         config.api_key = 'sk_23a00c357cb44c358'
         self.test_user = {
             'credentials': {
-                'username': 'denis.stebunov@ivelum.com',
-                'password': 'user-super',
+                'username': 'support@ivelum.com',
+                'password': 'SJW8Gg',
             },
             'details': {
-                'original_username': 'den',
-                'first_name': 'slow',
-                'last_name': 'poke',
+                'original_username': 'ivelum',
+                'first_name': 'do not remove of modify',
+                'last_name': 'user for tests',
             }
         }
 
