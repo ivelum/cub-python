@@ -179,6 +179,10 @@ class Organization(ListableObject):
     pass
 
 
+class Position(ListableObject):
+    pass
+
+
 class Member(CreatableObject, UpdatableObject, RemovableObject, ListableObject):
     pass
 
@@ -193,4 +197,16 @@ class Group(CreatableObject, UpdatableObject, RemovableObject, ListableObject):
 
 
 class GroupMember(CreatableObject, RemovableObject, ListableObject):
+    pass
+
+
+class Plan(CubObject):
+    pass
+
+
+class ServiceSubscription(ListableObject):
+    pass
+
+
+class Site(ListableObject):
     pass
