@@ -18,6 +18,7 @@ def objects_from_json(json_content, api_key=None):
                 'user': User,
                 'organization': Organization,
                 'member': Member,
+                'position': Position,
                 'memberposition': MemberPosition,
                 'invitation': Invitation,
                 'invitationbatch': InvitationBatch,
@@ -25,6 +26,9 @@ def objects_from_json(json_content, api_key=None):
                 'groupmember': GroupMember,
                 'servicesubscription': ServiceSubscription,
                 'plan': Plan,
+                'site': Site,
+                'mailinglist': MailingList,
+                'subscription': Subscription,
             }.get(obj, CubObject)
             return klass(api_key=api_key, id=id).load_from(json_content)
         else:
@@ -211,4 +215,12 @@ class ServiceSubscription(ListableObject):
 
 
 class Site(ListableObject):
+    pass
+
+
+class MailingList(ListableObject):
+    pass
+
+
+class Subscription(ListableObject):
     pass
