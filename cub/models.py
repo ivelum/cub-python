@@ -29,6 +29,8 @@ def objects_from_json(json_content, api_key=None):
                 'site': Site,
                 'mailinglist': MailingList,
                 'subscription': Subscription,
+                'country': Country,
+                'state': State,
             }.get(obj, CubObject)
             return klass(api_key=api_key, id=id).load_from(json_content)
         else:
@@ -223,4 +225,14 @@ class MailingList(ListableObject):
 
 
 class Subscription(ListableObject):
+    pass
+
+
+class Country(ListableObject):
+    @classmethod
+    def class_url(cls):
+        return '/countries'
+
+
+class State(ListableObject):
     pass

@@ -3,7 +3,7 @@ from unittest import TestCase
 
 from cub import config, User
 from cub.models import Organization, Member, InvitationBatch, Group, \
-    objects_from_json
+    objects_from_json, Country
 from cub.timezone import utc
 
 
@@ -78,5 +78,11 @@ class APITest(TestCase):
         user = User.login(**self.test_user['credentials'])
         try:
             InvitationBatch.list(notification_sender=user, api_key=user.token)
+        except Exception as e:
+            self.fail(e)
+
+    def test_countries(self):
+        try:
+            Country.list()
         except Exception as e:
             self.fail(e)
