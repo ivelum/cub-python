@@ -212,6 +212,10 @@ class Plan(CubObject):
     pass
 
 
+class Customer(CubObject):
+    pass
+
+
 class ServiceSubscription(ListableObject):
     pass
 
