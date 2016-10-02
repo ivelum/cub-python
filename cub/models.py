@@ -26,6 +26,7 @@ def objects_from_json(json_content, api_key=None):
                 'groupmember': GroupMember,
                 'servicesubscription': ServiceSubscription,
                 'plan': Plan,
+                'customer': Customer,
                 'site': Site,
                 'mailinglist': MailingList,
                 'subscription': Subscription,
