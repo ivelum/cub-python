@@ -1,8 +1,9 @@
+from .compat import string_types
 from .transport import API, json, json_datetime_hook
 
 
 def objects_from_json(json_content, api_key=None):
-    if isinstance(json_content, basestring):
+    if isinstance(json_content, string_types):
         try:
             content = json.loads(json_content, object_hook=json_datetime_hook)
         except ValueError:

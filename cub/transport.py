@@ -2,13 +2,12 @@ from datetime import datetime
 import json
 import platform
 import textwrap
-import urllib
 import warnings
 
+from .compat import string_types, binary_type
 from .exceptions import *
 from .timezone import utc
 from .version import version
-import models
 
 
 # TODO: use urlfetch for Google App Engine
@@ -25,12 +24,26 @@ except ImportError:
             'we recommend to install requests, if possible.'
         )
     )
-    import urllib2
-    _lib = 'urllib2'
-    _lib_ver = urllib2.__version__
+    try:
+        from urllib2 import Request, urlopen, HTTPError, \
+            __version__ as urllib_ver
+        _lib = 'urllib2'
+        _lib_ver = urllib_ver
+    except ImportError:
+        from urllib.request import Request, urlopen
+        from urllib.error import HTTPError, URLError
+        _lib = 'urllib2'
+        _lib_ver = 'internal'
+
+try:
+    from urllib.parse import urlencode
+except ImportError:
+    from urllib import urlencode
 
 
 def urlify(params, prefix=''):
+    from .models import CubObject
+
     def is_number(s):
         try:
             float(s)
@@ -48,16 +61,14 @@ def urlify(params, prefix=''):
             result[key] = 'true' if v else 'false'
         elif v is None:
             result[key] = 'null'
-        elif isinstance(v, basestring):
+        elif isinstance(v, string_types):
+            if isinstance(v, binary_type):
+                # Must be utf-8, raise exception if it isn't
+                v = v.decode('utf-8')
             if v in ('true', 'false', 'null') or is_number(v):
                 v = '"%s"' % v
-            if isinstance(v, unicode):
-                v = v.encode('utf8')
-            elif isinstance(v, str):
-                # Must be utf-8, raise exception if it isn't
-                v.decode('utf8')
             result[key] = v
-        elif isinstance(v, models.CubObject):
+        elif isinstance(v, CubObject):
             result[key] = v.id
         else:
             result[key] = v
@@ -66,7 +77,7 @@ def urlify(params, prefix=''):
 
 def json_datetime_hook(dikt):
     for k, v in dikt.items():
-        if isinstance(v, basestring) and v.endswith('Z'):
+        if isinstance(v, string_types) and v.endswith('Z'):
             try:
                 dt = datetime.strptime(v, '%Y-%m-%dT%H:%M:%SZ')
             except ValueError:
@@ -89,7 +100,7 @@ class API(object):
 
     def requests_request(self, method, url, data, headers, timeout):
         if method == 'get':
-            abs_url = '%s?%s' % (url, urllib.urlencode(data))
+            abs_url = '%s?%s' % (url, urlencode(data))
             params = {}
         else:
             abs_url = url
@@ -106,24 +117,24 @@ class API(object):
         return http_code, http_body
 
     def urllib2_request(self, method, url, data, headers, timeout):
-        params = urllib.urlencode(data)
+        params = urlencode(data)
         if method == 'get':
             abs_url = '%s?%s' % (url, params)
-            req = urllib2.Request(abs_url, None, headers)
+            req = Request(abs_url, None, headers)
         elif method == 'post':
-            req = urllib2.Request(url, params, headers)
+            req = Request(url, params.encode('ascii'), headers)
         elif method == 'delete':
             abs_url = '%s?%s' % (url, params)
-            req = urllib2.Request(abs_url, None, headers)
+            req = Request(abs_url, None, headers)
             req.get_method = lambda: 'DELETE'
         else:
-            raise APIError, 'Unsupported method: %s' % method
+            raise APIError('Unsupported method: %s' % method)
 
         try:
-            response = urllib2.urlopen(req, timeout=timeout)
+            response = urlopen(req, timeout=timeout)
             http_code = response.code
             http_body = response.read()
-        except urllib2.HTTPError, e:
+        except HTTPError as e:
             http_code = e.code
             http_body = e.read()
         return http_code, http_body
@@ -185,13 +196,16 @@ class API(object):
                     headers=headers,
                     timeout=self.timeout
                 )
-            except urllib2.URLError as e:
+            except URLError as e:
                 raise ConnectionError(
                     'Cannot connect to Cub API using URL %s' % abs_url
                 )
 
         try:
-            json_body = json.loads(http_body, object_hook=json_datetime_hook)
+            json_body = json.loads(
+                http_body.decode('utf-8'),
+                object_hook=json_datetime_hook,
+            )
         except Exception as e:
             raise APIError(
                 'Invalid response from the API: %s' % http_body,
