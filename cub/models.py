@@ -33,6 +33,10 @@ def objects_from_json(json_content, api_key=None):
                 'subscription': Subscription,
                 'country': Country,
                 'state': State,
+                'product': Product,
+                'sku': SKU,
+                'order': Order,
+                'orderitem': OrderItem,
             }.get(obj, CubObject)
             return klass(api_key=api_key, id=id).load_from(json_content)
         else:
@@ -241,4 +245,20 @@ class Country(ListableObject):
 
 
 class State(ListableObject):
+    pass
+
+
+class Product(CubObject):
+    pass
+
+
+class SKU(CubObject):
+    pass
+
+
+class Order(ListableObject):
+    pass
+
+
+class OrderItem(ListableObject):
     pass
