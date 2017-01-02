@@ -256,9 +256,10 @@ class SKU(CubObject):
     pass
 
 
-class Order(CreatableObject, ListableObject):
+class Order(CreatableObject, UpdatableObject, RemovableObject, ListableObject):
     pass
 
 
-class OrderItem(CreatableObject, ListableObject):
+class OrderItem(CreatableObject, UpdatableObject, RemovableObject,
+                ListableObject):
     pass
