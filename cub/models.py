@@ -87,6 +87,8 @@ class CubObject(object):
         return '%s/%s' % (self.class_url(), self.id)
 
     def load_from(self, dikt):
+        if dikt is None:
+            return self
         for k, v in dikt.items():
             if isinstance(v, (dict, list)):
                 v = objects_from_json(v, self.api_key)
