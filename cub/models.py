@@ -22,7 +22,6 @@ def objects_from_json(json_content, api_key=None):
                 'position': Position,
                 'memberposition': MemberPosition,
                 'invitation': Invitation,
-                'invitationbatch': InvitationBatch,
                 'group': Group,
                 'groupmember': GroupMember,
                 'servicesubscription': ServiceSubscription,
@@ -184,12 +183,6 @@ class User(UpdatableObject):
 
 class Invitation(CreatableObject, RemovableObject, ListableObject):
     pass
-
-
-class InvitationBatch(ListableObject):
-    @classmethod
-    def class_url(cls):
-        return '/invitationbatches'
 
 
 class Organization(ListableObject):
