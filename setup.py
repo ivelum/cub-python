@@ -23,7 +23,7 @@ setup(
     url='https://github.com/ivelum/cub-python',
     packages=packages,
     install_requires=requires,
-    license=open('LICENSE').read(),
+    license=open('LICENSE').readline().strip(),
     zip_safe=False,
     test_suite="tests",
     classifiers=(
