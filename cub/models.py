@@ -21,7 +21,6 @@ def objects_from_json(json_content, api_key=None):
                 'member': Member,
                 'position': Position,
                 'memberposition': MemberPosition,
-                'invitation': Invitation,
                 'group': Group,
                 'groupmember': GroupMember,
                 'servicesubscription': ServiceSubscription,
@@ -179,10 +178,6 @@ class User(UpdatableObject):
             'provider': provider,
         })
         return cls().load_from(response)
-
-
-class Invitation(CreatableObject, RemovableObject, ListableObject):
-    pass
 
 
 class Organization(ListableObject):
