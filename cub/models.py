@@ -209,7 +209,7 @@ class Plan(CubObject):
     pass
 
 
-class Customer(ListableObject):
+class Customer(CreatableObject, ListableObject):
     pass
 
 
