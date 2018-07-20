@@ -3,7 +3,7 @@ from unittest import TestCase
 
 from cub import config, User
 from cub.models import Organization, Member, Group, \
-    objects_from_json, Country
+    objects_from_json, Country, Lead
 from cub.timezone import utc
 
 
@@ -79,3 +79,14 @@ class APITest(TestCase):
             Country.list()
         except Exception as e:
             self.fail(e)
+
+    def test_leads(self):
+        leads = Lead.list(count=2)
+        self.assertTrue(len(leads) <= 2)
+        for lead in leads:
+            self.assertTrue(lead.data)
+            self.assertTrue(lead.id is not None)
+            self.assertTrue(lead.email is not None)
+            ld = Lead.get(id=lead.id)
+            self.assertEqual(lead.email, ld.email)
+            self.assertFalse(lead.deleted)

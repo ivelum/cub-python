@@ -36,6 +36,7 @@ def objects_from_json(json_content, api_key=None):
                 'order': Order,
                 'orderitem': OrderItem,
                 'charge': Charge,
+                'lead': Lead,
             }.get(obj, CubObject)
             return klass(api_key=api_key, id=id).load_from(json_content)
         else:
@@ -257,4 +258,8 @@ class OrderItem(CreatableObject, UpdatableObject, RemovableObject,
 
 
 class Charge(ListableObject):
+    pass
+
+
+class Lead(ListableObject):
     pass
