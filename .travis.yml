@@ -12,7 +12,7 @@ env:
   - HTTPLIB=requests
   - HTTPLIB=
 install:
-  - pip install $HTTPLIB
+  - if ! [ -z "$HTTPLIB" ]; then pip install $HTTPLIB; fi
 script: nosetests
 notifications:
   slack: ivelum:m5sGlwz1uEy5sQ32n0kg9lNh
