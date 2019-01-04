@@ -1,8 +1,8 @@
 Cub Client for Python
 =====================
 
-.. image:: https://travis-ci.org/ivelum/cub-python.png?branch=master
-        :target: https://travis-ci.org/ivelum/cub-python
+.. image:: https://travis-ci.org/praetoriandigital/cub-python.png?branch=master
+        :target: https://travis-ci.org/praetoriandigital/cub-python
 
 Requirements
 ------------
@@ -70,4 +70,4 @@ Report bugs
 
 Report issues to the project's `Issues Tracking`_ on Github.
 
-.. _`Issues Tracking`: https://github.com/ivelum/cub-python/issues
+.. _`Issues Tracking`: https://github.com/praetoriandigital/cub-python/issues
