@@ -15,4 +15,6 @@ install:
   - if ! [ -z "$HTTPLIB" ]; then pip install $HTTPLIB; fi
 script: nosetests
 notifications:
-  slack: ivelum:m5sGlwz1uEy5sQ32n0kg9lNh
+  slack:
+    rooms:
+      secure: ZMIVcIxsNKY8slDiOzNArVjqnmkq5kEwU0VXUej6cSSO+vC7ZAv9zEpTA3AOTybkOD7tARaHgmjPDb5R/ERq1zGabvAVAYLNo4p0OZSkQVRr7wniGkuwjOKfKienPeuXhXuLvdJaVK7eT82gq7rXQO8TK+rpKtUfwCCy4YwW+QU=
