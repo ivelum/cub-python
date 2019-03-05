@@ -25,7 +25,7 @@ except ImportError:
         )
     )
     try:
-        from urllib2 import Request, urlopen, HTTPError, \
+        from urllib2 import Request, urlopen, HTTPError, URLError, \
             __version__ as urllib_ver
         _lib = 'urllib2'
         _lib_ver = urllib_ver
