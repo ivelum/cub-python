@@ -17,6 +17,9 @@ nosetests.xml
 # PyCharm
 .idea
 
+# pyenv
+.python-version
+
 .DS_Store
 testtest11.py
 README.html

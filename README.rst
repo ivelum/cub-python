@@ -71,3 +71,24 @@ Report bugs
 Report issues to the project's `Issues Tracking`_ on Github.
 
 .. _`Issues Tracking`: https://github.com/praetoriandigital/cub-python/issues
+
+
+Development
+------------
+
+Install tox: ::
+
+    $ pip install tox
+
+run tests: ::
+
+    $ tox
+
+To install additional pythons, you can use `pyenv`_ : ::
+
+    $ pyenv install 3.4.9
+    $ pyenv install 3.5.6
+    $ # in project dir run pyenv local
+    $ pyenv local system 3.4.9 3.5.6
+
+.. _`pyenv`: https://github.com/pyenv/pyenv/
