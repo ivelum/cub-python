@@ -54,8 +54,8 @@ def urlify(params, prefix=''):
     result = {}
     items = params.items() if isinstance(params, dict) else enumerate(params)
     for k, v in items:
-        key = '%s__%s' % (prefix, k) if prefix else k
-        if isinstance(v, dict) or isinstance(v, list):
+        key = '%s[%s]' % (prefix, k) if prefix else k
+        if isinstance(v, (dict, list, tuple)):
             result.update(urlify(v, key))
         elif isinstance(v, bool):
             result[key] = 'true' if v else 'false'

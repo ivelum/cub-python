@@ -3,8 +3,9 @@ from unittest import TestCase
 
 from cub import config, User
 from cub.models import Organization, Member, Group, \
-    objects_from_json, Country, Lead
+    objects_from_json, Country, Lead, CubObject
 from cub.timezone import utc
+from cub.transport import urlify
 
 
 class APITest(TestCase):
@@ -90,3 +91,46 @@ class APITest(TestCase):
             ld = Lead.get(id=lead.id)
             self.assertEqual(lead.email, ld.email)
             self.assertFalse(lead.deleted)
+
+    def test_nested_query(self):
+        cub_obj = CubObject(id='cub_1')
+        cases = (
+            ({'str': 'str', 'int': 1,
+              'True': True, 'False': False, 'None': None,
+              'true': 'true', 'false': 'false', 'null': 'null', 'number': '1'},
+             {'str': 'str', 'int': 1,
+              'True': 'true', 'False': 'false', 'None': 'null',
+              'true': '"true"', 'false': '"false"', 'null': '"null"',
+              'number': '"1"'}),
+            ({'obj': cub_obj},
+             {'obj': 'cub_1'}),
+            ({'dict': {'key': 'val'}},
+             {'dict[key]': 'val'}),
+            ({'dict': {'key': 'val'}},
+             {'dict[key]': 'val'}),
+            ({'list': [1, 'str', None], 'dict': {'dkey': 'dval'}, 'key': 'val'},
+             {'list[0]': 1, 'list[1]': 'str', 'list[2]': 'null',
+              'dict[dkey]': 'dval', 'key': 'val'}),
+            ({'empty_list': [], 'empty_dict': {}},
+             {}),
+            ({'root': {'dict': ['val']}},
+             {'root[dict][0]': 'val'}),
+            ({'root': {'dict': ['val1', 'val2']}},
+             {'root[dict][0]': 'val1', 'root[dict][1]': 'val2'}),
+            ({'root': {'dict1': ['val1'], 'dict2': ['val2']}},
+             {'root[dict1][0]': 'val1', 'root[dict2][0]': 'val2'}),
+            ({'root': [{'key': 'val'}]},
+             {'root[0][key]': 'val'}),
+            ({'root': [[[1], 1], 1]},
+             {'root[0][0][0]': 1, 'root[0][1]': 1, 'root[1]': 1}),
+            ({'list': [
+                 {'name': 'John', 'age': 20},
+                 {'name': 'Kate', 'age': 18},
+                 {'name': 'Smith', 'age': 30},
+             ]},
+             {'list[0][name]': 'John', 'list[0][age]': 20,
+              'list[1][name]': 'Kate', 'list[1][age]': 18,
+              'list[2][name]': 'Smith', 'list[2][age]': 30}),
+        )
+        for data, expected in cases:
+            self.assertEqual(urlify(data), expected)
