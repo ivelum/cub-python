@@ -1,6 +1,8 @@
 from datetime import datetime
 from unittest import TestCase
 
+import pytest
+
 from cub import config, User
 from cub.models import Organization, Member, Group, \
     objects_from_json, Country, Lead, CubObject
@@ -31,66 +33,67 @@ class APITest(TestCase):
             'deleted': True
         }
         group = objects_from_json(group_sample)
-        self.assertTrue(isinstance(group, Group))
-        self.assertEqual(group.id, group_sample['id'])
-        self.assertEqual(group.name, group_sample['name'])
-        self.assertEqual(group.deleted, group_sample['deleted'])
+        assert isinstance(group, Group)
+        assert group.id == group_sample['id']
+        assert group.name == group_sample['name']
+        assert group.deleted == group_sample['deleted']
 
     def test_user_login_and_get_by_token(self):
         user = User.login(**self.test_user['credentials'])
         for k, v in self.test_user['details'].items():
-            self.assertEqual(v, getattr(user, k))
-        self.assertTrue(isinstance(user.date_joined, datetime))
+            assert v == getattr(user, k)
+        assert isinstance(user.date_joined, datetime)
         utc_now = datetime.utcnow().replace(tzinfo=utc)
-        self.assertTrue(user.date_joined < utc_now)
+        assert user.date_joined < utc_now
 
         user2 = User.get(user.token)
-        self.assertEqual(user2.username, user.username)
-        self.assertEqual(user2.first_name, user.first_name)
-        self.assertEqual(user2.last_name, user.last_name)
-        self.assertEqual(user2.date_joined, user.date_joined)
-        self.assertFalse(user2.deleted)
+        assert user2.username == user.username
+        assert user2.first_name == user.first_name
+        assert user2.last_name == user.last_name
+        assert user2.date_joined == user.date_joined
+        assert not user2.deleted
 
     def test_user_reload(self):
         user = User.login(**self.test_user['credentials'])
         try:
             user.reload(expand='membership__organization')
         except Exception as e:
-            self.fail(e)
-        self.assertTrue(len(user.membership) > 0)
+            pytest.fail(e)
+
+        assert len(user.membership) > 0
         member = user.membership[0]
-        self.assertTrue(isinstance(member, Member))
-        self.assertEqual(member.api_key, user.api_key)
-        self.assertTrue(isinstance(member.organization, Organization))
-        self.assertEqual(member.organization.api_key, user.api_key)
-        self.assertFalse(member.deleted)
+        assert isinstance(member, Member)
+        assert member.api_key == user.api_key
+        assert isinstance(member.organization, Organization)
+        assert member.organization.api_key == user.api_key
+        assert not member.deleted
 
     def test_organizations(self):
         organizations = Organization.list(count=2)
-        self.assertTrue(len(organizations) <= 2)
+        assert len(organizations) <= 2
         for organization in organizations:
-            self.assertTrue(organization.id is not None)
-            self.assertTrue(organization.name is not None)
+            assert organization.id is not None
+            assert organization.name is not None
             org = Organization.get(id=organization.id)
-            self.assertEqual(organization.name, org.name)
-            self.assertFalse(organization.deleted)
+            assert organization.name == org.name
+            assert not organization.deleted
 
     def test_countries(self):
         try:
             Country.list()
         except Exception as e:
-            self.fail(e)
+            pytest.fail(e)
 
     def test_leads(self):
         leads = Lead.list(count=2)
-        self.assertTrue(len(leads) <= 2)
+        assert len(leads) <= 2
         for lead in leads:
-            self.assertTrue(lead.data)
-            self.assertTrue(lead.id is not None)
-            self.assertTrue(lead.email is not None)
+            assert lead.data
+            assert lead.id is not None
+            assert lead.email is not None
             ld = Lead.get(id=lead.id)
-            self.assertEqual(lead.email, ld.email)
-            self.assertFalse(lead.deleted)
+            assert lead.email == ld.email
+            assert not lead.deleted
 
     def test_nested_query(self):
         cub_obj = CubObject(id='cub_1')
@@ -133,4 +136,4 @@ class APITest(TestCase):
               'list[2][name]': 'Smith', 'list[2][age]': 30}),
         )
         for data, expected in cases:
-            self.assertEqual(urlify(data), expected)
+            assert urlify(data) == expected

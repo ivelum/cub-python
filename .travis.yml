@@ -11,8 +11,9 @@ env:
   - HTTPLIB=requests
   - HTTPLIB=
 install:
+  - pip install pytest
   - if ! [ -z "$HTTPLIB" ]; then pip install $HTTPLIB; fi
-script: nosetests
+script: pytest tests.py
 notifications:
   slack:
     rooms:
