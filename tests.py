@@ -5,7 +5,7 @@ import pytest
 
 from cub import config, User
 from cub.models import Organization, Member, Group, \
-    objects_from_json, Country, Lead, CubObject
+    objects_from_json, Country, Lead, Message, CubObject
 from cub.timezone import utc
 from cub.transport import urlify
 
@@ -103,6 +103,19 @@ def test_leads():
         ld = Lead.get(id=lead.id)
         assert lead.email == ld.email
         assert not lead.deleted
+
+
+def test_messages():
+    messages = Message.list(count=2)
+
+    assert len(messages) <= 2
+    for message in messages:
+        assert message.name
+        assert message.id is not None
+        ms = Message.get(id=message.id)
+        assert message.name == ms.name
+        assert not ms.deleted
+
 
 
 @pytest.mark.parametrize('data,expected', (
