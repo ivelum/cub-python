@@ -181,6 +181,11 @@ class User(UpdatableObject):
         })
         return cls().load_from(response)
 
+    def reissue_token(self, **kwargs):
+        url = '%s/%s' % (self.class_url(), 'reissue-token')
+        response = API(self.api_key).request('post', url, kwargs)
+        return self.load_from(response)
+
 
 class Organization(ListableObject):
     pass

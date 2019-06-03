@@ -1,3 +1,4 @@
+import time
 from datetime import datetime
 from unittest import TestCase
 
@@ -57,6 +58,26 @@ def test_user_login_and_get_by_token(user_data):
     assert user2.last_name == user.last_name
     assert user2.date_joined == user.date_joined
     assert not user2.deleted
+
+
+def test_user_reissue_token(user_data):
+    user = User.login(**user_data['credentials'])
+    token1 = user.token
+
+    # make sure new token has different expiration datetime
+    # so, it will differ from previous token
+    time.sleep(1)
+    user.reissue_token()
+    token2 = user.token
+    user.reload() # make suer we can access user data with new token
+    assert token1 != token2
+
+    time.sleep(1)
+    # public key of Cub Admin and Demo app
+    user.reissue_token(app_key='pk_PXobUgPbVGhA5fSyW')
+    token3 = user.token
+    user.reload()
+    assert token2 != token3
 
 
 def test_user_reload(user_data):
