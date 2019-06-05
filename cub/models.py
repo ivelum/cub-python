@@ -38,6 +38,7 @@ def objects_from_json(json_content, api_key=None):
                 'charge': Charge,
                 'lead': Lead,
                 'message': Message,
+                'usersite': UserSite,
             }.get(obj, CubObject)
             return klass(api_key=api_key, id=id).load_from(json_content)
         else:
@@ -272,4 +273,8 @@ class Lead(ListableObject):
 
 
 class Message(ListableObject):
+    pass
+
+
+class UserSite(ListableObject):
     pass

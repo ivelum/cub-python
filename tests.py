@@ -1,15 +1,13 @@
 import time
 from datetime import datetime
-from unittest import TestCase
 
 import pytest
 
 from cub import config, User
 from cub.models import Organization, Member, Group, \
-    objects_from_json, Country, Lead, Message, CubObject
+    objects_from_json, Country, Lead, Message, CubObject, UserSite
 from cub.timezone import utc
 from cub.transport import urlify
-
 
 config.api_key = 'sk_23a00c357cb44c358'
 
@@ -137,6 +135,23 @@ def test_messages():
         assert message.name == ms.name
         assert not ms.deleted
 
+
+def test_usersites():
+    usersites = UserSite.list()
+    assert len(usersites) > 1
+    for usersite in usersites:
+        assert usersite.site
+        assert usersite.user
+        assert usersite.last_seen
+        assert usersite.first_seen
+        assert usersite.is_active
+
+        ust = UserSite.get(id=usersite.id)
+        assert ust.site == usersite.site
+        assert ust.user == usersite.user
+        assert ust.last_seen == usersite.last_seen
+        assert ust.first_seen == usersite.first_seen
+        assert ust.is_active == usersite.is_active
 
 
 @pytest.mark.parametrize('data,expected', (
