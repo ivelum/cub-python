@@ -136,8 +136,9 @@ def test_messages():
         assert not ms.deleted
 
 
-def test_usersites():
-    usersites = UserSite.list()
+def test_usersites(user_data):
+    user = User.login(**user_data['credentials'])
+    usersites = UserSite.list(user=user.id)
     assert len(usersites) > 1
     for usersite in usersites:
         assert usersite.site
