@@ -18,6 +18,7 @@ def objects_from_json(json_content, api_key=None):
             klass = {
                 'user': User,
                 'organization': Organization,
+                'organizationtrust': OrganizationTrust,
                 'member': Member,
                 'position': Position,
                 'memberposition': MemberPosition,
@@ -189,6 +190,10 @@ class User(UpdatableObject):
 
 
 class Organization(ListableObject):
+    pass
+
+
+class OrganizationTrust(CubObject):
     pass
 
 
