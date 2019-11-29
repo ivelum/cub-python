@@ -119,18 +119,8 @@ class CreatableObject(CubObject):
 
 class UpdatableObject(CubObject):
     def save(self):
-        if self.id:
-            response = API(self.api_key).request(
-                'post',
-                self.instance_url(),
-                params=self._values
-            )
-        else:
-            response = API(self.api_key).request(
-                'post',
-                self.__class__.class_url(),
-                params=self._values
-            )
+        url = self.instance_url() if self.id else self.__class__.class_url()
+        response = API(self.api_key).request('post', url, params=self._values)
         return self.load_from(response)
 
 
