@@ -40,6 +40,7 @@ def objects_from_json(json_content, api_key=None):
                 'lead': Lead,
                 'message': Message,
                 'usersite': UserSite,
+                'webhooksubscription': WebhookSubscription,
             }.get(obj, CubObject)
             return klass(api_key=api_key, id=id).load_from(json_content)
         else:
@@ -282,4 +283,8 @@ class Message(ListableObject):
 
 
 class UserSite(ListableObject):
+    pass
+
+
+class WebhookSubscription(CreatableObject, RemovableObject):
     pass
