@@ -7,9 +7,9 @@ Cub Client for Python
 Requirements
 ------------
 
-Python version 2.7, 3.4, 3.5, 3.6 or PyPy. For better security, we recommend to
-install `Python Requests`_ library, since it supports SSL certs verification.
-To install Requests, simply run: ::
+Python version 2.7, 3.4, 3.5, 3.6, 3.7, 3.8 or PyPy. For better security, we
+recommend to install `Python Requests`_ library, since it supports SSL certs
+verification. To install Requests, simply run: ::
 
     $ pip install requests
 
