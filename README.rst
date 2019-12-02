@@ -9,11 +9,11 @@ Requirements
 
 Python version 2.7, 3.4, 3.5, 3.6, 3.7, 3.8 or PyPy. For better security, we
 recommend to install `Python Requests`_ library, since it supports SSL certs
-verification. To install Requests, simply run: ::
+verification. To install Requests, simply run::
 
     $ pip install requests
 
-or using easy_install: ::
+or using easy_install::
 
     $ easy_install requests
 
@@ -26,11 +26,11 @@ it will not verify SSL certificate of Cub API.
 Installation
 ------------
 
-Install using pip, recommended (`why?`_): ::
+Install using pip, recommended (`why?`_)::
 
     $ pip install cub
 
-or using easy_install: ::
+or using easy_install::
 
     $ easy_install cub
 
@@ -76,15 +76,15 @@ Report issues to the project's `Issues Tracking`_ on Github.
 Development
 ------------
 
-Install tox: ::
+Install tox::
 
     $ pip install tox
 
-run tests: ::
+run tests::
 
     $ tox
 
-To install additional pythons, you can use `pyenv`_ : ::
+To install additional pythons, you can use `pyenv`_::
 
     $ pyenv install 3.4.9
     $ pyenv install 3.5.6
