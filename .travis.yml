@@ -8,6 +8,9 @@ python:
 - '3.7'
 - '3.8'
 env:
+  global:
+    secure: gYiqOw7SRuM7uvVWKuD6/qmBuN4aUVVNEFrYBjA08G9TFgPAr2sRfXOYNljSwQf2AVLZ9kDvuWQgvqaeFGjucll9js6Fa5QaeZTAYVQX4v3fXOQ/NbtFt2CCi1kRV8rWCDoINnUe+SJp9zudVda2xYvYqyYxJkH0zWAk+Yk4FPo=
+  jobs:
   - HTTPLIB=requests pytz
   - HTTPLIB=pytz
   - HTTPLIB=requests

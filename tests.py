@@ -1,5 +1,6 @@
 import time
 from datetime import datetime
+from os import getenv
 
 import pytest
 
@@ -9,7 +10,7 @@ from cub.models import Organization, Member, Group, \
 from cub.timezone import utc
 from cub.transport import urlify
 
-config.api_key = 'sk_23a00c357cb44c358'
+config.api_key = getenv('INTEGRATION_TESTS_SECRET_KEY')
 
 
 cub_obj = CubObject(id='cub_1')
