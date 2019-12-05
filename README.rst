@@ -1,7 +1,7 @@
 Cub Client for Python
 =====================
 
-.. image:: https://travis-ci.org/praetoriandigital/cub-python.png?branch=master
+.. image:: https://travis-ci.org/praetoriandigital/cub-python.svg?branch=master
         :target: https://travis-ci.org/praetoriandigital/cub-python
 
 Requirements
