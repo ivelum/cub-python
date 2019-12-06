@@ -279,5 +279,5 @@ class UserSite(ListableObject):
     pass
 
 
-class WebhookSubscription(CreatableObject, RemovableObject):
+class WebhookSubscription(ListableObject, CreatableObject, RemovableObject):
     pass

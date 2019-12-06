@@ -7,7 +7,7 @@ import pytest
 from cub import User, config
 from cub.models import (
     Country, CubObject, Group, Lead, Member, Message, Organization,
-    UserSite, objects_from_json,
+    UserSite, WebhookSubscription, objects_from_json,
 )
 from cub.timezone import utc
 from cub.transport import urlify
@@ -158,6 +158,21 @@ def test_usersites(user_data):
         assert ust.last_seen == usersite.last_seen
         assert ust.first_seen == usersite.first_seen
         assert ust.is_active == usersite.is_active
+
+
+def test_webhooksubscriptions():
+    ws = WebhookSubscription.create(instance='org_r0DY7pGnsSkUpZsM')
+    ws = WebhookSubscription.get(id=ws.id)
+
+    subscriptions = WebhookSubscription.list(count=2)
+    assert 0 < len(subscriptions) <= 2
+    for subscription in subscriptions:
+        assert subscription.id is not None
+        assert subscription.instance is not None
+        assert subscription.application is not None
+        assert not subscription.deleted
+
+    ws.delete()
 
 
 @pytest.mark.parametrize('data,expected', (
