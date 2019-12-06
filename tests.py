@@ -12,8 +12,12 @@ from cub.models import (
 from cub.timezone import utc
 from cub.transport import urlify
 
-config.api_key = getenv('INTEGRATION_TESTS_SECRET_KEY')
 
+skip_on_ci = pytest.mark.skipif(
+    getenv('CI') == 'true',
+    reason='Skipping this test on a CI.',
+)
+config.api_key = getenv('INTEGRATION_TESTS_SECRET_KEY')
 
 cub_obj = CubObject(id='cub_1')
 
@@ -160,6 +164,7 @@ def test_usersites(user_data):
         assert ust.is_active == usersite.is_active
 
 
+@skip_on_ci
 def test_webhooksubscriptions():
     ws = WebhookSubscription.create(instance='org_r0DY7pGnsSkUpZsM')
     ws = WebhookSubscription.get(id=ws.id)
