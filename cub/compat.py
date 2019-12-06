@@ -4,7 +4,7 @@ if sys.version_info >= (3, 0):
     text_type = str
     binary_type = bytes
 else:
-    text_type = unicode
+    text_type = unicode  # noqa: F821
     binary_type = str
 
 string_types = (text_type, binary_type)
