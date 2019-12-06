@@ -4,9 +4,11 @@ from os import getenv
 
 import pytest
 
-from cub import config, User
-from cub.models import Organization, Member, Group, \
-    objects_from_json, Country, Lead, Message, CubObject, UserSite
+from cub import User, config
+from cub.models import (
+    Country, CubObject, Group, Lead, Member, Message, Organization,
+    UserSite, objects_from_json,
+)
 from cub.timezone import utc
 from cub.transport import urlify
 
@@ -14,6 +16,8 @@ config.api_key = getenv('INTEGRATION_TESTS_SECRET_KEY')
 
 
 cub_obj = CubObject(id='cub_1')
+
+
 @pytest.fixture
 def user_data():
     return {
@@ -68,7 +72,7 @@ def test_user_reissue_token(user_data):
     time.sleep(1)
     user.reissue_token()
     token2 = user.token
-    user.reload() # make suer we can access user data with new token
+    user.reload()  # make suer we can access user data with new token
     assert token1 != token2
 
     time.sleep(1)

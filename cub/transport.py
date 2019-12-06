@@ -1,14 +1,17 @@
-from datetime import datetime
 import json
 import platform
 import textwrap
 import warnings
+from datetime import datetime
 
-from .compat import string_types, binary_type
-from .exceptions import *
+from .compat import binary_type, string_types
+from .exceptions import (
+    APIError, BadGateway, BadRequest, ConnectionError, Forbidden,
+    InternalError, MethodNotAllowed, NotFound, ServiceUnavailable,
+    Unauthorized,
+)
 from .timezone import utc
 from .version import version
-
 
 # TODO: use urlfetch for Google App Engine
 try:
@@ -183,7 +186,7 @@ class API(object):
                     headers=headers,
                     timeout=self.timeout
                 )
-            except requests.RequestException as e:
+            except requests.RequestException:
                 raise ConnectionError(
                     'Cannot connect to Cub API using URL %s' % abs_url
                 )
@@ -196,7 +199,7 @@ class API(object):
                     headers=headers,
                     timeout=self.timeout
                 )
-            except URLError as e:
+            except URLError:
                 raise ConnectionError(
                     'Cannot connect to Cub API using URL %s' % abs_url
                 )
@@ -206,7 +209,7 @@ class API(object):
                 http_body.decode('utf-8'),
                 object_hook=json_datetime_hook,
             )
-        except Exception as e:
+        except Exception:
             raise APIError(
                 'Invalid response from the API: %s' % http_body,
                 http_code,
@@ -242,7 +245,8 @@ class API(object):
             elif http_code == 404:
                 raise NotFound(err_desc, http_code, http_body, json_body)
             elif http_code == 405:
-                raise MethodNotAllowed(err_desc, http_code, http_body, json_body)
+                raise MethodNotAllowed(
+                    err_desc, http_code, http_body, json_body)
             elif http_code == 500:
                 raise InternalError(err_desc, http_code, http_body, json_body)
             elif http_code == 502:

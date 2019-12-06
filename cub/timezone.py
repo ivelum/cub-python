@@ -29,4 +29,5 @@ class UTC(tzinfo):
     def dst(self, dt):
         return ZERO
 
+
 utc = pytz.utc if pytz else UTC()

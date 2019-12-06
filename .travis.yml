@@ -15,6 +15,15 @@ env:
   - HTTPLIB=pytz
   - HTTPLIB=requests
   - HTTPLIB=
+stages:
+- test
+- lint
+jobs:
+  include:
+  - python: '3.8'
+    install: pip install flake8
+    script: flake8
+    stage: lint
 install:
 - pip install pytest
 - if ! [ -z "$HTTPLIB" ]; then pip install $HTTPLIB; fi

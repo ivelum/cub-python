@@ -62,7 +62,8 @@ class CubObject(object):
         return super(CubObject, self).__setattr__(key, value)
 
     def __repr__(self):
-        return '%s id=%s: %s' % (self.__class__.__name__, self.id, self._values)
+        return '%s id=%s: %s' % (
+            self.__class__.__name__, self.id, self._values)
 
     def __getitem__(self, item):
         return getattr(self, item)
@@ -100,7 +101,8 @@ class CubObject(object):
         return self
 
     def reload(self, **kwargs):
-        response = API(self.api_key).request('get', self.instance_url(), kwargs)
+        api = API(self.api_key)
+        response = api.request('get', self.instance_url(), kwargs)
         return self.load_from(response)
 
     @classmethod
@@ -192,7 +194,8 @@ class Position(ListableObject):
     pass
 
 
-class Member(CreatableObject, UpdatableObject, RemovableObject, ListableObject):
+class Member(CreatableObject, UpdatableObject, RemovableObject,
+             ListableObject):
     pass
 
 
