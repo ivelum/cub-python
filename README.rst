@@ -74,7 +74,7 @@ Report issues to the project's `Issues Tracking`_ on Github.
 
 
 Development
-------------
+-----------
 
 Install tox::
 
