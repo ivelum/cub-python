@@ -9,7 +9,8 @@ python:
 - '3.8'
 env:
   global:
-    secure: gYiqOw7SRuM7uvVWKuD6/qmBuN4aUVVNEFrYBjA08G9TFgPAr2sRfXOYNljSwQf2AVLZ9kDvuWQgvqaeFGjucll9js6Fa5QaeZTAYVQX4v3fXOQ/NbtFt2CCi1kRV8rWCDoINnUe+SJp9zudVda2xYvYqyYxJkH0zWAk+Yk4FPo=
+  - secure: gYiqOw7SRuM7uvVWKuD6/qmBuN4aUVVNEFrYBjA08G9TFgPAr2sRfXOYNljSwQf2AVLZ9kDvuWQgvqaeFGjucll9js6Fa5QaeZTAYVQX4v3fXOQ/NbtFt2CCi1kRV8rWCDoINnUe+SJp9zudVda2xYvYqyYxJkH0zWAk+Yk4FPo=
+  - secure: kNPFXpGOJbMMmBAHV8AbpI9nvxAi7OcvRWs0b90Jf/Y/gdtVowe6/EgfTmQ1uxbSd5U4AZb3D4eABxfYo1ywbmYBeC0ATEV2+I/3GiZUpSbbxedJkunXTPEYDcOruWcgO1wrdNshrW7CnFCf0MBnC4M0fzMfIxyuAYCHExca3pA=
   jobs:
   - HTTPLIB=requests pytz
   - HTTPLIB=pytz

@@ -75,14 +75,21 @@ Report issues to the project's `Issues Tracking`_ on Github.
 
 Development
 -----------
+Add new encrypted travis env var::
+
+    $ travis encrypt --repo=praetoriandigital/cub-python --add env.global MY_SECRET_ENV=super_secret
+
+Run tests with local python::
+
+    $ INTEGRATION_TESTS_SECRET_KEY={key} INTEGRATION_TESTS_USER_PASS={password} pytest -v --tb=short tests.py
 
 Install tox::
 
     $ pip install tox
 
-run tests::
+Run tests with tox::
 
-    $ tox
+    $ INTEGRATION_TESTS_SECRET_KEY={key} INTEGRATION_TESTS_USER_PASS={password} tox
 
 To install additional pythons, you can use `pyenv`_::
 

@@ -27,7 +27,7 @@ def user_data():
     return {
         'credentials': {
             'username': 'support@ivelum.com',
-            'password': 'SJW8Gg',
+            'password': getenv('INTEGRATION_TESTS_USER_PASS'),
         },
         'details': {
             'original_username': 'ivelum',
