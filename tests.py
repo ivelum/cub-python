@@ -122,6 +122,22 @@ def test_countries():
 
 
 def test_leads():
+    lead_data = {
+        # LeadForm - [DEV] Integration Tests for LID client libs
+        'form': 'lfm_yxBZF1bgiwKYdvrX',
+        'cookie': 'value=key;thisis=theway;',
+        'email': 'lid-tests@example.com',
+        'first_name': 'Lid',
+        'last_name': 'Tests',
+        'url': 'http://localhost:9230/forms-demo/',
+    }
+    new_lead = Lead.create(**lead_data)
+    new_lead.id is not None
+    assert new_lead.email == lead_data['email']
+    assert new_lead.form == lead_data['form']
+    assert new_lead.data['first_name'] == lead_data['first_name']
+    assert new_lead.site == 'ste_mmIblyT4n3pmaABf'  # localhost:9230
+
     leads = Lead.list(count=2)
     assert len(leads) <= 2
     for lead in leads:

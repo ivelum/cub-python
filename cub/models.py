@@ -267,7 +267,7 @@ class Charge(ListableObject):
     pass
 
 
-class Lead(ListableObject):
+class Lead(CreatableObject, ListableObject):
     pass
 
 
