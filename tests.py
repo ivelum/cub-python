@@ -2,6 +2,12 @@ import time
 from datetime import datetime
 from os import getenv
 
+try:
+    from unittest.mock import patch
+except ImportError:
+    # py27 support
+    from mock import patch
+
 import pytest
 
 from cub import User, config
@@ -88,11 +94,16 @@ def test_user_reissue_token(user_data):
 
 
 def test_send_confirmation_email(user_data):
-    user = User.login(**user_data['credentials'])
+
+    user = User(id='usr_upfrcJvCTyXCVBj8')
     user_site = UserSite.list(user=user.id)[0]
 
-    response = user.send_confirmation_email(site=user_site.site)
-    assert 'message' in response
+    with patch.object(User, 'send_confirmation_email') as mocked_response:
+        mocked_response.return_value = {'message': 'Email has been sent'}
+        response = user.send_confirmation_email(site=user_site.site)
+
+        mocked_response.assert_called_with(site=user_site.site)
+        assert 'message' in response
 
 
 def test_user_reload(user_data):

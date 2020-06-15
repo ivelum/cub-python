@@ -2,6 +2,7 @@
 
 import os
 import cub
+import sys
 
 try:
     from setuptools import setup
@@ -12,6 +13,9 @@ os.environ['PYTHONDONTWRITEBYTECODE'] = '1'
 
 packages = ['cub']
 requires = ['requests>=0.9']
+
+if sys.version_info.major == 2:
+    requires.append('mock==3.0.5')
 
 setup(
     name='cub',
