@@ -3,10 +3,10 @@ from datetime import datetime
 from os import getenv
 
 try:
-    from unittest.mock import patch
+    from unittest.mock import patch, MagicMock
 except ImportError:
     # py27 support
-    from mock import patch
+    from mock import patch, MagicMock
 
 import pytest
 
@@ -93,17 +93,29 @@ def test_user_reissue_token(user_data):
     assert token2 != token3
 
 
-def test_send_confirmation_email(user_data):
+@pytest.mark.parametrize(
+    'site, status_code, message', [
+        ('ste_mmIblyT4n3pmaABf', 200, 'Email has been sent'),
+        (None, 400, 'The site field is required')
+    ]
+)
+@patch('cub.transport.API.request')
+def test_send_confirmation_email(request_mock, site, status_code, message):
+    response_mock = MagicMock(status_code=status_code, message=message)
+    request_mock.return_value = response_mock
 
     user = User(id='usr_upfrcJvCTyXCVBj8')
-    user_site = UserSite.list(user=user.id)[0]
 
-    with patch.object(User, 'send_confirmation_email') as mocked_response:
-        mocked_response.return_value = {'message': 'Email has been sent'}
-        response = user.send_confirmation_email(site=user_site.site)
+    response = user.send_confirmation_email(site=site)
 
-        mocked_response.assert_called_with(site=user_site.site)
-        assert 'message' in response
+    assert request_mock.call_count == 1
+    request_mock.assert_called_with(
+        'post',
+        '/users/{}/send-confirmation-email'.format(user.id),
+        {'site': site}
+    )
+    assert response.status_code == status_code
+    assert response.message == message
 
 
 def test_user_reload(user_data):
