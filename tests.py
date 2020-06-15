@@ -71,12 +71,12 @@ def test_user_reissue_token(user_data):
     user = User.login(**user_data['credentials'])
     token1 = user.token
 
-    # make sure new token has different expiration datetime
+    # make sure the new token has different expiration datetime
     # so, it will differ from previous token
     time.sleep(1)
     user.reissue_token()
     token2 = user.token
-    user.reload()  # make suer we can access user data with new token
+    user.reload()  # make sure we can access user data with new token
     assert token1 != token2
 
     time.sleep(1)
@@ -85,6 +85,14 @@ def test_user_reissue_token(user_data):
     token3 = user.token
     user.reload()
     assert token2 != token3
+
+
+def test_send_confirmation_email(user_data):
+    user = User.login(**user_data['credentials'])
+    user_site = UserSite.list(user=user.id)[0]
+
+    response = user.send_confirmation_email(site=user_site.site)
+    assert 'message' in response
 
 
 def test_user_reload(user_data):

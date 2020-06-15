@@ -181,6 +181,10 @@ class User(UpdatableObject):
         response = API(self.api_key).request('post', url, kwargs)
         return self.load_from(response)
 
+    def send_confirmation_email(self, **kwargs):
+        url = '%s/%s' % (self.instance_url(), 'send-confirmation-email')
+        return API(self.api_key).request('post', url, kwargs)
+
 
 class Organization(ListableObject):
     pass
