@@ -106,13 +106,13 @@ def test_send_confirmation_email(request_mock, site, status_code, message):
 
     user = User(id='usr_upfrcJvCTyXCVBj8')
 
-    response = user.send_confirmation_email(site=site)
+    response = user.send_confirmation_email(notification_site=site)
 
     assert request_mock.call_count == 1
     request_mock.assert_called_with(
         'post',
         '/users/{}/send-confirmation-email'.format(user.id),
-        {'site': site}
+        {'notification_site': site}
     )
     assert response.status_code == status_code
     assert response.message == message
