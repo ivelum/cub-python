@@ -15,13 +15,17 @@ from cub.models import (
     Country, CubObject, Group, Lead, Member, Message, Organization,
     UserSite, WebhookSubscription, objects_from_json,
 )
+from cub.exceptions import ConnectionError
 from cub.timezone import utc
-from cub.transport import urlify
-
+from cub.transport import urlify, _lib
 
 skip_on_ci = pytest.mark.skipif(
     getenv('CI') == 'true',
     reason='Skipping this test on a CI.',
+)
+skip_on_urllib = pytest.mark.skipif(
+    _lib != 'requests',
+    reason='urllib does not support auto retry feature.',
 )
 config.api_key = getenv('INTEGRATION_TESTS_SECRET_KEY')
 
@@ -225,6 +229,18 @@ def test_webhooksubscriptions():
         assert not subscription.deleted
 
     ws.delete()
+
+
+@skip_on_urllib
+def test_api_connection_auto_retry(monkeypatch):
+    start_time = time.time()
+    monkeypatch.setattr(config, 'api_url', 'http://localhost:9999')
+    with pytest.raises(ConnectionError):
+        Organization.list(count=2)
+    end_time = time.time()
+    actual_time = end_time - start_time
+    expected_time = 1.2  # backoff 0.2: 0 + 0.4 + 0.8
+    assert actual_time >= expected_time
 
 
 @pytest.mark.parametrize('data,expected', (

@@ -16,7 +16,12 @@ from .version import version
 # TODO: use urlfetch for Google App Engine
 try:
     import requests
+    from requests.adapters import HTTPAdapter
+    from urllib3.util import Retry
+    retry = Retry(total=3, backoff_factor=0.2)
     _session = requests.session()
+    _session.mount('http://', HTTPAdapter(max_retries=retry))
+    _session.mount('https://', HTTPAdapter(max_retries=retry))
     _lib = 'requests'
     _lib_ver = requests.__version__
 except ImportError:
