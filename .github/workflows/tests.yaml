@@ -3,6 +3,18 @@ on:
   push:
     branches: [master]
 jobs:
+  notify-build-start:
+    runs-on: ubuntu-latest
+    steps:
+      # Send build notifications to Slack
+      - uses: voxmedia/github-action-slack-notify-build@v1
+        id: slack
+        with:
+          channel_id: C02CXQD5J
+          status: STARTED
+          color: warning
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
   tests:
     env:
       INTEGRATION_TESTS_USER_PASS: ${{ secrets.INTEGRATION_TESTS_USER_PASS }}
@@ -28,6 +40,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install mock pytest ${{ matrix.httplib }}
       - run: python -m pytest tests.py -v --tb=short
+      - name: Notify slack fail
+        uses: voxmedia/github-action-slack-notify-build@v1
+        if: failure()
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        with:
+          channel_id: C02CXQD5J
+          status: FAILED
+          color: danger
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -43,3 +64,25 @@ jobs:
           pip install mock flake8
       - name: Run lint
         run: flake8
+      - name: Notify slack fail
+        uses: voxmedia/github-action-slack-notify-build@v1
+        if: failure()
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        with:
+          channel_id: C0PT3267R
+          status: FAILED
+          color: danger
+  notify-build-success:
+    needs: [tests, lint]
+    runs-on: ubuntu-latest
+    steps:
+      # Send notification on build success
+      - name: Notify slack success
+        uses: voxmedia/github-action-slack-notify-build@v1
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        with:
+          channel_id: C02CXQD5J
+          status: SUCCESS
+          color: good
