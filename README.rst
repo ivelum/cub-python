@@ -1,13 +1,13 @@
 Cub Client for Python
 =====================
 
-.. image:: https://travis-ci.org/praetoriandigital/cub-python.svg?branch=master
-        :target: https://travis-ci.org/praetoriandigital/cub-python
+.. image:: https://github.com/praetoriandigital/cub-python/workflows/Tests/badge.svg
+        :target: https://github.com/praetoriandigital/cub-python/actions?query=workflow%3ATests
 
 Requirements
 ------------
 
-Python version 2.7, 3.4, 3.5, 3.6, 3.7, 3.8 or PyPy. For better security, we
+Python version 2.7, 3.5, 3.6, 3.7, 3.8, 3.9 or PyPy. For better security, we
 recommend to install `Python Requests`_ library, since it supports SSL certs
 verification. To install Requests, simply run::
 
@@ -75,9 +75,6 @@ Report issues to the project's `Issues Tracking`_ on Github.
 
 Development
 -----------
-Add new encrypted travis env var::
-
-    $ travis encrypt --repo=praetoriandigital/cub-python --add env.global MY_SECRET_ENV=super_secret
 
 Run tests with local python::
 
@@ -93,9 +90,9 @@ Run tests with tox::
 
 To install additional pythons, you can use `pyenv`_::
 
-    $ pyenv install 3.4.9
-    $ pyenv install 3.5.6
+    $ pyenv install 3.5.10
+    $ pyenv install 3.6.12
     $ # in project dir run pyenv local
-    $ pyenv local system 3.4.9 3.5.6
+    $ pyenv local system 3.5.10 3.6.12
 
 .. _`pyenv`: https://github.com/pyenv/pyenv/
